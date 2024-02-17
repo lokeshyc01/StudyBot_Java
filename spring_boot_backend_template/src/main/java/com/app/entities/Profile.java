@@ -6,12 +6,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
-@Table
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 @Entity
+@Table(name="profile")
 public class Profile 
 {
 	
-	public String gener;
+	public String gender;
 	public Date dob;
 	public String about;
 	public String contactNumber;
