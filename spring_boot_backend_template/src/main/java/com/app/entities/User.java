@@ -13,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapsId;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -55,6 +56,7 @@ public class User{
 
     @OneToOne
     @JoinColumn(name = "additional_details_id")
+    @MapsId
     private Profile additionalDetails;
 
     @ManyToMany
@@ -67,7 +69,7 @@ public class User{
     private String token;
 
     @Column
-    private LocalDateTime  resetPasswordExpires;
+    private LocalDateTime resetPasswordExpires;
 
     @Column(nullable = false)
     private String image;

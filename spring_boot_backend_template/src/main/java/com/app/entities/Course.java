@@ -41,7 +41,7 @@ public class Course {
     @Column
     private String whatYouWillLearn;
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL)
     private List<Section> courseContent = new ArrayList<Section>();
 
     @OneToMany(mappedBy = "course")
@@ -73,5 +73,16 @@ public class Course {
     private Date createdAt;
 
     // getters and setters
+    
+    public void addSectionToCourse(Section section) {
+        if (section != null) {
+            this.courseContent.add(section);
+        }
+    }
+    
+    public void removeSectionfromCourse(Section section)
+    {
+    	this.courseContent.remove(section);
+    }
 
 }

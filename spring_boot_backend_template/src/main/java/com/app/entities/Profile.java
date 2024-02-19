@@ -20,4 +20,12 @@ public class Profile
 	public Date dob;
 	public String about;
 	public String contactNumber;
+	
+	public Profile()
+	{
+		this.gender = null;
+		this.dob = null;
+		this.about = null;
+		this.contactNumber = null;
+	}
 }
