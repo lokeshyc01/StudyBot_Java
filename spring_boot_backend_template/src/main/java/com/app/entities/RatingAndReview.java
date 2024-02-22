@@ -16,7 +16,7 @@ public class RatingAndReview {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user", nullable = false)
     private User user;
 
@@ -26,10 +26,20 @@ public class RatingAndReview {
     @Column(length = 1000)
     private String review;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "course", nullable = false)
     private Course course;
 
     // getters and setters
+    
+    public void addCourse(Course course)
+    {
+    	this.course = course;
+    }
+    
+    public void addUser(User user)
+    {
+    	this.user = user;
+    }
 
 }

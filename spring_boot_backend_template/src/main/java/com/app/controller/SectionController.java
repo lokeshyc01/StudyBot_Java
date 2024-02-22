@@ -17,6 +17,7 @@ public class SectionController {
 
 	@Autowired
 	private SectionService secService;
+	
 	@PostMapping
 	public ResponseEntity<?> createSection(@RequestBody String sectionName,@RequestBody Long courseId)
 	{

@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -13,12 +14,11 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.MapsId;
+
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,7 +27,8 @@ import lombok.Setter;
 @Setter
 @Entity
 @Table(name = "users")
-public class User{
+public class User
+{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,9 +55,8 @@ public class User{
     @Column(nullable = false)
     private boolean approved;
 
-    @OneToOne
-    @JoinColumn(name = "additional_details_id")
-    @MapsId
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "additional_details")
     private Profile additionalDetails;
 
     @ManyToMany
@@ -71,20 +71,47 @@ public class User{
     @Column
     private LocalDateTime resetPasswordExpires;
 
-    @Column(nullable = false)
+    @Column
     private String image;
 
-    @OneToMany(mappedBy = "user")
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<CourseProgress> courseProgress = new ArrayList<CourseProgress>();
 
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
 
-    @Column
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date updatedAt;
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime createdAt;
 
+    @Column(columnDefinition = "TIMESTAMP")
+    private LocalDateTime updatedAt;
+    
+    
+    public User(String firstName,String lastName,String email,String password,boolean approved,String accountType,Profile profile,String imageUrl)
+    {
+    	this.firstName = firstName;
+    	this.lastName = lastName;
+    	this.email = email;
+    	this.password = password;
+    	this.accountType = accountType;
+    	this.approved = approved;
+    	this.additionalDetails = profile;
+    	this.image = imageUrl;
+    	this.createdAt = LocalDateTime.now();
+    }
+    public void addCourse(Course course)
+    {
+    	this.courses.add(course);
+    	course.addUser(this);
+    }
+    
     // getters and setters
-
+    public void addProfile(Profile profile)
+    {
+    	this.additionalDetails = profile;
+    }
+    
+    public void addCourseProgress(CourseProgress courseProgress)
+    {
+    	this.courseProgress.add(courseProgress);
+    	courseProgress.addUser(this);
+    }
 }

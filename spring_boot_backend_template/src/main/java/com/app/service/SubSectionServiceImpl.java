@@ -24,7 +24,7 @@ public class SubSectionServiceImpl implements SubSectionService {
 	private SectionRepository sectionrepo;
 	
 
-	public String createSubSection(Long sectionId, String title, String timeDuration, String description,
+	public String createSubSection(Long sectionId, String title, String description,
 			MultipartFile file) {
 		try {
 			if (sectionId == null || title == null || description == null || file == null) {
@@ -42,6 +42,7 @@ public class SubSectionServiceImpl implements SubSectionService {
 			return "section created successfully";
 
 		} catch (Exception e) {
+			e.printStackTrace();
 			return "Could not create subsection";
 		}
 	}

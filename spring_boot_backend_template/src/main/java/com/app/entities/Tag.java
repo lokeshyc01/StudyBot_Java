@@ -23,5 +23,8 @@ public class Tag {
     private Course course;
 
     // getters and setters
-
+    public void addCourse(Course course)
+    {
+    	this.course = course;
+    }
 }

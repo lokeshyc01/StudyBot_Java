@@ -19,9 +19,14 @@ public class Category {
     @Column
     private String description;
 
-    @OneToMany(mappedBy = "category")
+    @OneToMany(mappedBy = "category",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Course> courses = new ArrayList<Course>();
 
     // getters and setters
+    public void addCourse(Course course)
+    {
+    	this.courses.add(course);
+    	course.addCategory(this);
+    }
 
 }

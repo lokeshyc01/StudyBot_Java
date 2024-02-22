@@ -18,6 +18,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Entity
@@ -41,10 +42,10 @@ public class Course {
     @Column
     private String whatYouWillLearn;
 
-    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Section> courseContent = new ArrayList<Section>();
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course",cascade = CascadeType.ALL,orphanRemoval = true)
     private List<RatingAndReview> ratingAndReviews = new ArrayList<RatingAndReview>();
 
     @Column
@@ -53,26 +54,41 @@ public class Course {
     @Column
     private String thumbnail;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "course",fetch = FetchType.LAZY)
     private List<Tag> tags = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
 
-    @ManyToMany(mappedBy = "coursesEnrolled")
-    private List<User> studentsEnrolled = new ArrayList<User>();
+    @ManyToMany(mappedBy = "courses")
+    private List<User> users = new ArrayList<User>();
 
    
     @Column
     @Enumerated(EnumType.STRING)
     private CourseStatus status;
 
-    @Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date createdAt;
+    @Column(columnDefinition = "TIMESTAMP",updatable = false)
+    private LocalDateTime createdAt;
 
     // getters and setters
+    
+    public void addCategory(Category category)
+    {
+    	this.category = category;
+    }
+    
+    public void addUser(User user)
+    {
+    	this.users.add(user);
+    }
+    
+    public void addTag(Tag tag)
+    {
+    	this.tags.add(tag);
+    	tag.addCourse(this);
+    }
     
     public void addSectionToCourse(Section section) {
         if (section != null) {
@@ -84,5 +100,13 @@ public class Course {
     {
     	this.courseContent.remove(section);
     }
+    
+    public void addRatingAndReview(RatingAndReview rating)
+    {
+    	this.ratingAndReviews.add(rating);
+    	rating.addCourse(this);
+    }
+    
+    
 
 }

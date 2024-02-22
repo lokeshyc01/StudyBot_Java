@@ -22,10 +22,18 @@ public class CourseProgress {
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
+    
+    public void addUser(User user)
+    {
+    	this.user = user;
+    }
 //    intentionally left blank find out how to cofigure
 //    private List<SubSection> completedVideos;
 
     // getters and setters
-
+    
+    public void addCourse(Course course)
+    {
+    	this.course = course;
+    }
 }
