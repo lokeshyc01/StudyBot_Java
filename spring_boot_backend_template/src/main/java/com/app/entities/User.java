@@ -47,7 +47,7 @@ public class User
     private String password;
 
     @Column(nullable = false)
-    private String accountType;
+    private String role;
 
     @Column(nullable = false)
     private boolean active;
@@ -84,14 +84,14 @@ public class User
     @Column(columnDefinition = "TIMESTAMP")
     private LocalDateTime updatedAt;
     
-    
-    public User(String firstName,String lastName,String email,String password,boolean approved,String accountType,Profile profile,String imageUrl)
+ 
+    public User(String firstName,String lastName,String email,String password,boolean approved,String role,Profile profile,String imageUrl)
     {
     	this.firstName = firstName;
     	this.lastName = lastName;
     	this.email = email;
     	this.password = password;
-    	this.accountType = accountType;
+    	this.role = role;
     	this.approved = approved;
     	this.additionalDetails = profile;
     	this.image = imageUrl;
