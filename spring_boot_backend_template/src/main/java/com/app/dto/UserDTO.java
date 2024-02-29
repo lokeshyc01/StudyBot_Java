@@ -26,7 +26,7 @@ public class UserDTO {
 	public String confirmPassword;
 	@NotNull
 	public Role role;
-//	@NotBlank
-//	public String otp;
+	@NotBlank
+	public String otp;
 	
 }

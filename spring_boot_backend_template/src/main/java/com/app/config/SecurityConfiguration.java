@@ -39,6 +39,7 @@ public class SecurityConfiguration {
          .authorizeRequests(requests -> requests
              .antMatchers("/users/signin").permitAll()
              .antMatchers("/users/signup").permitAll()
+             .antMatchers("/users/sendotp").permitAll()
              .antMatchers("/admin").hasAnyAuthority(Role.ADMIN.name())
              .antMatchers("/students").hasAnyAuthority(Role.STUDENT.name())
              .antMatchers("/instructor").hasAnyAuthority(Role.INSTRUCTOR.name())

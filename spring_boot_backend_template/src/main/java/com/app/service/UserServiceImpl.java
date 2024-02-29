@@ -110,6 +110,22 @@ public class UserServiceImpl implements UserService {
 
 		return otp.toString();
 	}
+	
+	public String sendOTP(String email)
+	{
+//		 Check if user already exists
+    
+		Optional<User> checkUserExist = userRepo.findByEmail(email);
+		if (checkUserExist.isPresent()) {
+			return "User already exists. Please sign in to continue.";
+		}
+		
+		String generatedOtp = generateOTP();
+		otprepository.save(new OTP(email, generatedOtp, mailsender));
+		OTP latestOtp = otprepository.findTopByEmailOrderByCreatedAtDesc(email);
+		System.out.println("generated otp => "+generatedOtp);
+        return generatedOtp;
+	}
 
 	@Override
 	public String singUp(UserDTO user) {
@@ -120,11 +136,11 @@ public class UserServiceImpl implements UserService {
 		String password = user.getPassword();
 		String confirmPassword = user.getConfirmPassword();
 		Role role = user.getRole();
-//		String otp = user.getOtp();
+		String otp = user.getOtp();
 
 		System.out.println(firstName + "" + lastName + "" + email);
 
-		if (firstName == null || lastName == null || email == null || password == null ) {
+		if (firstName == null || lastName == null || email == null || password == null || otp == null) {
 			return "All Fields are required";
 		}
 

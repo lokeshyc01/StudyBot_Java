@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.app.dto.ApiResponse;
+import com.app.dto.OTPDTO;
 import com.app.dto.SignInDTO;
 import com.app.dto.UserDTO;
 import com.app.service.UserService;
@@ -41,6 +42,19 @@ public class UserController {
 					.body(new ApiResponse("Not able to singup" + e.getMessage()));
 		}
 	}
+	
+	@PostMapping(value = "/sendotp")
+	public ResponseEntity<?> sentOTP(@RequestBody OTPDTO email) {
+	    try {
+	        System.out.println("sendotp hit");
+	        String trimmedEmail = email.getEmail().trim();
+	        return ResponseEntity.ok(userService.sendOTP(trimmedEmail));
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+	                .body(new ApiResponse("Not able send otp" + e.getMessage()));
+	    }
+	}
+
 
 	
 }

@@ -9,4 +9,5 @@ public interface UserService {
 	public String  resetPassword(String password,String confirmPass,String token);
 	public String singUp(UserDTO user);
 	public String signIn(SignInDTO signin);
+	public String sendOTP(String email);
 }
