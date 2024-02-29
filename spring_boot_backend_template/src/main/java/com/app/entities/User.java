@@ -27,10 +27,13 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter
 @Setter
+@NoArgsConstructor
 @Entity
 @Table(name = "users")
 public class User implements UserDetails
@@ -53,12 +56,13 @@ public class User implements UserDetails
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @Column(name = "role")
     private Role role;
 
-    @Column(nullable = false)
+    
     private boolean active;
 
-    @Column(nullable = false)
+   
     private boolean approved;
 
     @OneToOne(cascade = CascadeType.ALL)
@@ -91,7 +95,7 @@ public class User implements UserDetails
     private LocalDateTime updatedAt;
     
  
-    public User(String firstName,String lastName,String email,String password,boolean approved,Role role,Profile profile,String imageUrl)
+    public User(String firstName,String lastName,String email,String password,boolean approved,Role role,String imageUrl)
     {
     	this.firstName = firstName;
     	this.lastName = lastName;
@@ -99,7 +103,6 @@ public class User implements UserDetails
     	this.password = password;
     	this.role = role;
     	this.approved = approved;
-    	this.additionalDetails = profile;
     	this.image = imageUrl;
     	this.createdAt = LocalDateTime.now();
     }

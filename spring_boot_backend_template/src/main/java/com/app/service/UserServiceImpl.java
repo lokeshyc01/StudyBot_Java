@@ -10,6 +10,7 @@ import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 //import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -38,7 +39,10 @@ public class UserServiceImpl implements UserService {
 	private EmailSenderService emailService;
 	@Autowired
 	private UserRepository userrepository;
-
+	
+	@Autowired
+	private BCryptPasswordEncoder passwordEncoder;
+	
 	public String resetPasswordToken(String email) {
 
 		User user = userRepo.findByEmail(email).orElseThrow();
@@ -115,13 +119,12 @@ public class UserServiceImpl implements UserService {
 		String email = user.getEmail();
 		String password = user.getPassword();
 		String confirmPassword = user.getConfirmPassword();
-		String accountType = user.getAccountType();
-		String contactNumber = user.getContactNumber();
-		String otp = user.getOtp();
+		Role role = user.getRole();
+//		String otp = user.getOtp();
 
 		System.out.println(firstName + "" + lastName + "" + email);
 
-		if (firstName == null || lastName == null || email == null || password == null || otp == null) {
+		if (firstName == null || lastName == null || email == null || password == null ) {
 			return "All Fields are required";
 		}
 
@@ -138,31 +141,21 @@ public class UserServiceImpl implements UserService {
 		if (checkUserExist.isPresent()) {
 			return "User already exists. Please sign in to continue.";
 		}
-		String generatedOtp = generateOTP();
-		otprepository.save(new OTP(email, generatedOtp, mailsender));
-		OTP latestOtp = otprepository.findTopByEmailOrderByCreatedAtDesc(email);
-		if (latestOtp == null || !otp.equals(latestOtp.getOtp())) {
-			return "The OTP is not valid";
-		}
+//		String generatedOtp = generateOTP();
+//		otprepository.save(new OTP(email, generatedOtp, mailsender));
+//		OTP latestOtp = otprepository.findTopByEmailOrderByCreatedAtDesc(email);
+//		if (latestOtp == null || !otp.equals(latestOtp.getOtp())) {
+//			return "The OTP is not valid";
+//		}
 
 //	        String hashedPassword = new BCryptPasswordEncoder().encode(password);
 
 		Profile profile = new Profile();
 
-		boolean approved = accountType.equals("Instructor");
-
-//            const user = await User.create({
-//                firstName,
-//                lastName,
-//                email,
-//                contactNumber,
-//                password: hashedPassword,
-//                accountType: accountType,
-//                approved: approved,
-//                additionalDetails: profileDetails._id,
-//                image: "",
-//              })
-		User createUser = new User(firstName, lastName, email, password, approved, Enum.valueOf(Role.class, accountType), profile, "");
+		boolean approved = Role.INSTRUCTOR.name().equals("INSTRUCTOR");
+		User createUser = new User(firstName, lastName, email, password, approved, role, "");
+		createUser.setPassword(passwordEncoder.encode(password));
+		createUser.addProfile(profile);
 		userRepo.save(createUser);
 		return "User created successfully";
 	}

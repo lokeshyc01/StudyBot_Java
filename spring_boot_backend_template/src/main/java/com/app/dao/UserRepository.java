@@ -12,5 +12,6 @@ public interface UserRepository extends JpaRepository<User, Long>{
 	
 	public Optional<User>findByFirstName(String username);
 	public Optional<User> findByToken(String token);
+	User findByRole(Role role);
 //	public  boolean isUserAvailableByEmail(String email);
 }

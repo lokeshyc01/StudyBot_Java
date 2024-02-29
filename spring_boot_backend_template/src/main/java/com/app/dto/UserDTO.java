@@ -3,6 +3,9 @@ package com.app.dto;
 import lombok.Setter;
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+
+import com.app.entities.Role;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,11 +24,9 @@ public class UserDTO {
 	public String password;
 	@NotBlank
 	public String confirmPassword;
-	@NotBlank
-	public String accountType;
-	@NotBlank
-	public String contactNumber;
-	@NotBlank
-	public String otp;
+	@NotNull
+	public Role role;
+//	@NotBlank
+//	public String otp;
 	
 }
